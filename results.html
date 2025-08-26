@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Results - Network Security Scanner{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <h2>Scan Results for {{ target }}</h2>
+
+    <section>
+        <h3>📄 Nmap Results</h3>
+        <pre>{{ nmap_results }}</pre>
+    </section>
+
+    <section>
+        <h3>📡 Socket Scan Results</h3>
+        <p>{{ socket_results }}</p>
+    </section>
+
+    <section>
+        <h3>🛡 Security Recommendations</h3>
+        <p>{{ recommendations }}</p>
+    </section>
+
+    <!-- Export PDF form -->
+    <form action="/export" method="POST">
+        <input type="hidden" name="target" value="{{ target }}">
+        <input type="hidden" name="nmap_results" value="{{ nmap_results }}">
+        <input type="hidden" name="socket_results" value="{{ socket_results }}">
+        <input type="hidden" name="recommendations" value="{{ recommendations }}">
+        <button type="submit">📥 Export as PDF</button>
+    </form>
+
+    <a href="/">🔙 New Scan</a>
+</div>
+{% endblock %}

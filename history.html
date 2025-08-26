@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Scan History{% endblock %}
+{% block content %}
+<h2 class="mb-4">📜 Scan History</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Target</th>
+      <th>Date</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for scan in scans %}
+    <tr>
+      <td>{{ scan[0] }}</td>
+      <td>{{ scan[1] }}</td>
+      <td>{{ scan[2] }}</td>
+      <td><a class="btn btn-sm btn-primary" href="{{ url_for('history_detail', scan_id=scan[0]) }}">View</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{{ url_for('index') }}" class="btn btn-secondary">🔙 Back</a>
+{% endblock %}
