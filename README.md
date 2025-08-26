@@ -78,3 +78,7 @@ secureport-scanner/
 🖥 Dark mode UI support
 
 ☁ Deployment on cloud (Heroku / Netlify + Backend API)
+
+🔐 Disclaimer
+
+This project is for educational & ethical use only. Do not scan systems without proper authorization.
