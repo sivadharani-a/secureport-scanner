@@ -1,9 +1,15 @@
-import subprocess
+import nmap
 
 def run_nmap_scan(target):
-    try:
-        # -Pn skips ping (works on hosts blocking ICMP)
-        result = subprocess.getoutput(f"nmap -Pn -T4 {target}")
-        return result
-    except Exception as e:
-        return f"Error running Nmap scan: {str(e)}"
+    nm = nmap.PortScanner()
+    nm.scan(target, "20-1024")
+    results = []
+    for host in nm.all_hosts():
+        for proto in nm[host].all_protocols():
+            ports = nm[host][proto].keys()
+            for port in ports:
+                state = nm[host][proto][port]["state"]
+                results.append({"port": port, "status": state})
+    if not results:
+        results.append({"port": "-", "status": "No open ports detected"})
+    return results
