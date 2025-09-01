@@ -13,8 +13,6 @@ It also provides basic security recommendations and allows exporting scan report
 
 ✅ Export scan results as PDF reports
 
-✅ Modern Flask web interface with improved UI/UX
-
 📦 Tech Stack
 
 Backend: Python (Flask, Socket, Subprocess)
