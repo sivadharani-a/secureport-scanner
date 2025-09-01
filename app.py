@@ -1,9 +1,12 @@
+import os
 from flask import Flask, render_template, request, send_file, session
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from scanner.socket_scanner import run_socket_scan
 from scanner.nmap_scanner import run_nmap_scan
 from scanner.scapy_scanner import run_scapy_scan
 from pdf_exporter import generate_pdf
-import os
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"  # Needed for session storage
@@ -49,3 +52,4 @@ def download_report():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
