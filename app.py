@@ -1,7 +1,8 @@
 import os
 from flask import Flask, render_template, request, send_file, session
-import sys
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+import sys, os
+sys.path.append(os.path.dirname(__file__))  # force local imports
 
 from scanner.socket_scanner import run_socket_scan
 from scanner.nmap_scanner import run_nmap_scan
@@ -52,4 +53,5 @@ def download_report():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
