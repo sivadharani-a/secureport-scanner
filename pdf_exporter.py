@@ -1,64 +1,42 @@
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import inch
 import os
-from datetime import datetime
+import tempfile
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
 
+def export_report_pdf(report: dict) -> str:
+    fd, path = tempfile.mkstemp(prefix="scan_report_", suffix=".pdf")
+    os.close(fd)
 
-def add_watermark(c, text="SecurePort Scanner Security Labs"):
-    """
-    Adds a diagonal watermark to the current page.
-    """
-    c.saveState()
-    c.setFont("Helvetica-Bold", 40)
-    c.setFillGray(0.8, 0.3)  # light gray, transparent
-    c.translate(300, 400)    # move center
-    c.rotate(45)             # rotate diagonal
-    c.drawCentredString(0, 0, text)
-    c.restoreState()
+    c = canvas.Canvas(path, pagesize=A4)
+    width, height = A4
 
+    y = height - 50
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(50, y, "SecurePort Scanner — Report")
+    y -= 25
 
-class WatermarkDocTemplate(SimpleDocTemplate):
-    def afterPage(self, c, doc):
-        add_watermark(c)
+    c.setFont("Helvetica", 12)
+    c.drawString(50, y, f"Target: {report.get('target')}")
+    y -= 18
+    c.drawString(50, y, f"Scanned At: {report.get('scanned_at')}")
+    y -= 18
+    c.drawString(50, y, f"Summary: {report.get('summary')}")
+    y -= 24
 
+    c.setFont("Helvetica-Bold", 13)
+    c.drawString(50, y, "Open Ports")
+    y -= 18
 
-def generate_pdf(target, nmap_results, socket_results, recommendations, brand_name="SecurePort Scanner Security Labs"):
-    """
-    Generate a PDF scan report with watermark.
-    """
-    filename = f"scan_report_{target}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
-    filepath = os.path.join(os.getcwd(), filename)
+    c.setFont("Helvetica", 12)
+    open_ports = report.get("open_ports") or []
+    if open_ports:
+        for p in open_ports:
+            c.drawString(60, y, f"- {p}")
+            y -= 16
+    else:
+        c.drawString(60, y, "None detected")
+        y -= 16
 
-    styles = getSampleStyleSheet()
-    styles.add(ParagraphStyle(name="Heading1", fontSize=16, spaceAfter=10, leading=20))
-    styles.add(ParagraphStyle(name="BodyText", fontSize=12, leading=16))
-
-    doc = WatermarkDocTemplate(filepath, pagesize=letter)
-    story = []
-
-    # Title
-    story.append(Paragraph(f"Scan Report for {target}", styles["Heading1"]))
-    story.append(Spacer(1, 12))
-
-    # Nmap
-    story.append(Paragraph("📄 Nmap Results", styles["Heading1"]))
-    story.append(Paragraph(f"<pre>{nmap_results}</pre>", styles["BodyText"]))
-    story.append(Spacer(1, 12))
-
-    # Socket
-    story.append(Paragraph("📡 Socket Scan Results", styles["Heading1"]))
-    story.append(Paragraph(f"{socket_results}", styles["BodyText"]))
-    story.append(Spacer(1, 12))
-
-    # Recommendations
-    story.append(Paragraph("🛡 Security Recommendations", styles["Heading1"]))
-    for rec in recommendations:
-        story.append(Paragraph(f"• {rec}", styles["BodyText"]))
-    story.append(Spacer(1, 12))
-
-    doc.build(story)
-
-    return filepath
+    c.showPage()
+    c.save()
+    return path
