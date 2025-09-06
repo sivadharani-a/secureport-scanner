@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="scan-section animate__animated animate__fadeInUp">
+  <div class="scan-body">
+    <div class="scan-form">
+      <h1>Scan</h1>
+      <h1>Run a Network Scan</h1>
+
+      <form method="POST" action="{{ url_for('scan') }}">
+        <input type="text" name="target" placeholder="Enter target (e.g., scanme.nmap.org)" required>
+        <div style="margin-top:12px;">
+          <button type="submit" class="btn btn-big">🔍 Start Scan</button>
+        </div>
+      </form>
+
+      <a href="{{ url_for('scan') }}" style="display:inline-block; width:100%; max-width:360px; margin-top:14px;">
+        <button class="btn-alt" type="button" style="width:100%;">⟳ New Scan</button>
+      </a>
+    </div>
+
+    <div class="scan-illustration" id="scan-lottie"></div>
+  </div>
+</section>
+
+<script>
+  loadLottieInto('scan-lottie', 'https://assets9.lottiefiles.com/packages/lf20_jcikwtux.json', '420px', '420px');
+</script>
+{% endblock %}

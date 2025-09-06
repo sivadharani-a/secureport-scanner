@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="about-section animate__animated animate__fadeInUp">
+  <h1>About</h1>
+
+  <div class="about-body">
+    <div class="about-text">
+      <p>
+        SecurePort Scanner was created to help developers, students and security practitioners
+        quickly check for open ports and discover what services are exposed on a host.
+      </p>
+      <p>
+        It is designed as an educational and audit tool — safe for responsible scanning
+        on systems you own or are permitted to test.
+      </p>
+    </div>
+
+    <div id="about-lottie" class="about-illustration">
+      <!-- JS will populate -->
+    </div>
+  </div>
+</section>
+
+<script>
+  // Replaced with a cybersecurity/lock-shield animation
+  loadLottieInto(
+    'about-lottie',
+    'https://assets9.lottiefiles.com/packages/lf20_tfb3estd.json', // cybersecurity shield animation
+    '360px',
+    '360px'
+  );
+</script>
+{% endblock %}
