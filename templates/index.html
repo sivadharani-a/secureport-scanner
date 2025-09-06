@@ -1,13 +1,29 @@
 {% extends "base.html" %}
-
-{% block title %}Home - Network Security Scanner{% endblock %}
-
 {% block content %}
-<div class="form-container">
-    <h2>Enter Target to Scan</h2>
-    <form method="POST">
-        <input type="text" name="target" placeholder="e.g. scanme.nmap.org" required>
-        <button type="submit">🚀 Start Scan</button>
-    </form>
-</div>
+<section class="home-section animate__animated animate__fadeInUp">
+  <div class="home-text">
+  <h1 class="home-title">SecurePort Scanner</h1>
+
+    <p>
+      A lightweight scanner that helps you discover open ports and exposed services.
+      Learn what's visible from the network and take steps to reduce attack surface.
+    </p>
+    <p>
+      For quick testing use <strong>scanme.nmap.org</strong> or your local host.
+    </p>
+
+    <div style="margin-top:16px;">
+      <a href="{{ url_for('scan') }}" class="btn btn-big">🔍 Start Scan</a>
+    </div>
+  </div>
+
+  <div class="home-illustration" id="home-lottie">
+    <!-- JS will populate -->
+  </div>
+</section>
+
+<script>
+  // stable cybersecurity-themed animation for home
+  loadLottieInto('home-lottie', 'https://assets10.lottiefiles.com/packages/lf20_w51pcehl.json', '420px', '420px');
+</script>
 {% endblock %}
