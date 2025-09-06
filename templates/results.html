@@ -1,35 +1,28 @@
 {% extends "base.html" %}
-
-{% block title %}Results - Network Security Scanner{% endblock %}
-
 {% block content %}
-<div class="results-container">
-    <h2>Scan Results for {{ target }}</h2>
+<section class="results-section">
+  <h1>Scan Results for {{ target }}</h1>
 
-    <section>
-        <h3>📄 Nmap Results</h3>
-        <pre>{{ nmap_results }}</pre>
-    </section>
+  {% if results %}
+  <table>
+    <tr>
+      <th>Port</th>
+      <th>Status</th>
+    </tr>
+    {% for r in results %}
+    <tr>
+      <td>{{ r.port if r.port != "-" else "-" }}</td>
+      <td>{{ r.status }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>No results found.</p>
+  {% endif %}
 
-    <section>
-        <h3>📡 Socket Scan Results</h3>
-        <p>{{ socket_results }}</p>
-    </section>
-
-    <section>
-        <h3>🛡 Security Recommendations</h3>
-        <p>{{ recommendations }}</p>
-    </section>
-
-    <!-- Export PDF form -->
-    <form action="/export" method="POST">
-        <input type="hidden" name="target" value="{{ target }}">
-        <input type="hidden" name="nmap_results" value="{{ nmap_results }}">
-        <input type="hidden" name="socket_results" value="{{ socket_results }}">
-        <input type="hidden" name="recommendations" value="{{ recommendations }}">
-        <button type="submit">📥 Export as PDF</button>
-    </form>
-
-    <a href="/">🔙 New Scan</a>
-</div>
+  <div class="actions">
+    <a href="{{ url_for('scan') }}" class="btn btn-primary">🔍 New Scan</a>
+    <a href="{{ url_for('download_report') }}" class="btn btn-secondary">⬇ Download PDF</a>
+  </div>
+</section>
 {% endblock %}
